@@ -26,8 +26,8 @@ public class RSAKeyMatchComposite extends Composite
   private Text text_output;
   private String privateKeyPath = Config.KEY_SAVE_PATH;
 
-  private String inputPrivateKeyDemo = "请输入商户应用私钥，此私钥是商户调用支付宝接口进行交易的唯一凭证，请谨慎保管！";
-  private String inputPublicKeyDemo = "请输入商户应用公钥， 请确保与上传到支付宝开放平台的应用公钥是同一个！";
+  private String inputPrivateKeyDemo = "请输入商户应用私钥，此私钥是商户调用支付平台进行交易的唯一凭证，请谨慎保管！";
+  private String inputPublicKeyDemo = "请输入商户应用公钥， 请确保与上传到支付平台开放平台的应用公钥是同一个！";
 
   public RSAKeyMatchComposite(Composite parent, int style)
   {

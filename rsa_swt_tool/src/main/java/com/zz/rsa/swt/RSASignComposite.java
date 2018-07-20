@@ -48,19 +48,19 @@ public class RSASignComposite extends Composite
   {
     super(parent, style);
 
-    Link link_url = new Link(this, 0);
-    link_url.setText("<A>使用说明</A>");
-    link_url.setToolTipText("点击查看签名说明");
-    Display display = parent.getDisplay();
-    link_url.setFont(new Font(display, "宋体", 10, 0));
-
-    link_url.setBounds(700, 3, 80, 20);
-
-    link_url.addSelectionListener(new SelectionAdapter() {
-      public void widgetSelected(SelectionEvent event) {
-        RsaKey.openBrowserForUrl("https://doc.open.alipay.com/docs/doc.htm?docType=1&articleId=106118");
-      }
-    });
+//    Link link_url = new Link(this, 0);
+//    link_url.setText("<A>使用说明</A>");
+//    link_url.setToolTipText("点击查看签名说明");
+//    Display display = parent.getDisplay();
+//    link_url.setFont(new Font(display, "宋体", 10, 0));
+//
+//    link_url.setBounds(700, 3, 80, 20);
+//
+//    link_url.addSelectionListener(new SelectionAdapter() {
+//      public void widgetSelected(SelectionEvent event) {
+//        RsaKey.openBrowserForUrl("https://doc.open.alipay.com/docs/doc.htm?docType=1&articleId=106118");
+//      }
+//    });
     Label label = new Label(this, 0);
     label.setBounds(5, 50, 70, 20);
     label.setText("请求参数：");

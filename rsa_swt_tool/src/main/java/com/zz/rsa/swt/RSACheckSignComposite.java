@@ -33,7 +33,7 @@ public class RSACheckSignComposite extends Composite
   private Text public_text;
   private String waitCheckSignStr;
   private String inputParamDemo = "https请求同步返回报文无需验签。\r\n异步通知报文格式：total_amount=2.00&buyer_id=2088102116773037&body=大乐透2.1&trade_no=2016071921001003030200089909&refund_fee=0.00&notify_time=2016-07-19 14:10:49&subject=大乐透2.1&sign_type=RSA&charset=utf-8&notify_type=trade_status_sync&out_trade_no=0719141034-6418&gmt_close=2016-07-19 14:10:46&gmt_payment=2016-07-19 14:10:47&trade_status=TRADE_SUCCESS&version=1.0&sign=kPbQIjX&gmt_create=2016-07-19 14:10:44&app_id=2015102700040153&seller_id=2088102119685838&notify_id=4a91b7a78a503640467525113fb7d8bg8e";
-  private String inputPublicKeyDemo = "请输入支付宝提供的公钥，如不知道，可以点击查看公钥进行查看！";
+  private String inputPublicKeyDemo = "请输入支付平台提供的公钥，如不知道，可以点击查看公钥进行查看！";
 
   public static void main(String[] args)
   {
@@ -47,7 +47,7 @@ public class RSACheckSignComposite extends Composite
     Label label_title = new Label(this, 0);
     label_title.setBounds(150, 5, 425, 20);
 
-    label_title.setText("此功能仅支持支付宝异步通知做验签，请勿对其他报文做验签！");
+    label_title.setText("此功能仅支持支付平台异步通知做验签，请勿对其他报文做验签！");
     label_title.setBackground(getDisplay().getSystemColor(7));
 
     Display display = parent.getDisplay();
@@ -88,20 +88,20 @@ public class RSACheckSignComposite extends Composite
         }
       }
     });
-    Link link = new Link(this, 0);
-    link.setText("<A>查看公钥</A>");
-    link.setToolTipText("点击登录支付宝开放平台查看支付宝公钥");
-    link.setFont(new Font(display, "宋体", 10, 0));
-    link.setBounds(5, 193, 90, 20);
-
-    link.addSelectionListener(new SelectionAdapter() {
-      public void widgetSelected(SelectionEvent event) {
-        RsaKey.openBrowserForUrl("https://openhome.alipay.com/platform/keyManage.htm");
-      }
-    });
+//    Link link = new Link(this, 0);
+//    link.setText("<A>查看公钥</A>");
+//    link.setToolTipText("点击登录支付平台开放平台查看支付宝公钥");
+//    link.setFont(new Font(display, "宋体", 10, 0));
+//    link.setBounds(5, 193, 90, 20);
+//
+//    link.addSelectionListener(new SelectionAdapter() {
+//      public void widgetSelected(SelectionEvent event) {
+//        RsaKey.openBrowserForUrl("https://openhome.alipay.com/platform/keyManage.htm");
+//      }
+//    });
     Label label_1 = new Label(this, 0);
     label_1.setBounds(5, 170, 90, 20);
-    label_1.setText("支付宝公钥：");
+    label_1.setText("支付平台公钥：");
 
     this.public_text = new Text(this, 2626);
     this.public_text.setBounds(100, 140, 670, 80);
@@ -239,19 +239,19 @@ public class RSACheckSignComposite extends Composite
 
         if (RSACheckSignComposite.this.inputPublicKeyDemo.equals(publicKey)) {
           MessageDialog.openWarning(RSACheckSignComposite.this.getShell(), "警告", 
-            "请输入支付宝公钥！");
+            "请输入支付平台公钥！");
           return;
         }
 
         if (StringUtils.isNotBlank(publicKey)) {
           if ((publicKey.contains("\r\n")) || (publicKey.contains("\n")))
             MessageDialog.openWarning(RSACheckSignComposite.this.getShell(), "警告", 
-              "支付宝公钥不能存在换行，请删除换行后再试！");
+              "平台公钥不能存在换行，请删除换行后再试！");
         }
         else
         {
           MessageDialog.openWarning(RSACheckSignComposite.this.getShell(), "警告", 
-            "请输入支付宝公钥！");
+            "请输入支付平台公钥！");
           return;
         }
         String inputString = "";

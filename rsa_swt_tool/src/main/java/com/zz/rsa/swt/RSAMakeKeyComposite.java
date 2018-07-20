@@ -69,8 +69,8 @@ public class RSAMakeKeyComposite extends Composite
       }
     });
     Link update_link_url = new Link(this, 0);
-    update_link_url.setText("<A>支付宝RSA签名升级公告</A>");
-    update_link_url.setToolTipText("点击查看支付宝RSA签名升级公告");
+    update_link_url.setText("<A>支付平台RSA签名升级公告</A>");
+    update_link_url.setToolTipText("点击查看支付平台RSA签名升级公告");
     update_link_url.setFont(new Font(display, "宋体", 10, 0));
 
     FormData fd_update_link_url = new FormData();
@@ -231,10 +231,10 @@ public class RSAMakeKeyComposite extends Composite
     FormData fd_label = new FormData();
     fd_label.left = new FormAttachment(1, 0);
     label.setLayoutData(fd_label);
-    label.setText("merchant-privateKey:");
+    label.setText("privateKey:");
 
     Label label_1 = new Label(this, 0);
-    label_1.setText("merchant-publicKey:");
+    label_1.setText("publicKey:");
     FormData fd_label_1 = new FormData();
     fd_label_1.top = new FormAttachment(label, 130);
     fd_label_1.left = new FormAttachment(1, 0);

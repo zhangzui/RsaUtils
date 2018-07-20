@@ -67,12 +67,12 @@ public class RSAWindow
     }
 
     public static void showLogo() {
-        String logoFile = "alipay_logo.png";
+        String logoFile = "logo.png";
 
         if (!new File(logoFile).exists()) {
             try {
                 SupportUtil.inputStream2File(RSAWindow.class
-                        .getResourceAsStream("/img/alipay_logo.png"), logoFile);
+                        .getResourceAsStream("/img/logo.png"), logoFile);
             }
             catch (IOException e) {
                 e.printStackTrace();
