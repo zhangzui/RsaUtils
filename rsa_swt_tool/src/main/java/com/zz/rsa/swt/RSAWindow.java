@@ -33,7 +33,7 @@ public class RSAWindow
         Display display = Display.getDefault();
         shell = new Shell(display, 64);
         shell.setText("  RSA签名验签工具(V1.4)  ");
-        //showLogo();
+        showLogo();
 
         if (Env.isWindow()) {
             String fileName = Config.KEY_SAVE_PATH + "应用私钥_tmp.txt";
