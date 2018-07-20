@@ -1,6 +1,5 @@
 package com.zz.rsa.utils;
 
-import com.alibaba.common.lang.SystemUtil;
 import com.zz.rsa.bean.Config;
 import com.zz.rsa.bean.Env;
 import org.apache.commons.lang.StringUtils;
@@ -19,7 +18,7 @@ public class RsaKey
 
   static { openssl = "openssl\\bin\\openssl.exe";
     txtedit = "cmd /c start \"\" ";
-    String os = SystemUtil.getOsInfo().getName();
+    String os = System.getProperty("os.name");;
     if (os.toLowerCase().contains("mac")) {
       openssl = "openssl";
       openMacTxteditCmd = new String[] { "open", "-a", "TextEdit", "" };

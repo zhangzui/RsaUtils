@@ -1,6 +1,5 @@
 package com.zz.rsa.swt;
 
-import com.alibaba.common.lang.StringUtil;
 import com.zz.rsa.bean.Config;
 import com.zz.rsa.utils.GenerateRsaUtil;
 import com.zz.rsa.utils.RSA;
@@ -367,7 +366,7 @@ public class RSASignComposite extends Composite
     RsaKey.appendTxtFile("签名步骤", "【" + inputParam + "】\r\n\r\n");
     step = Integer.valueOf(step.intValue() + 1);
 
-    if ((StringUtil.isNotEmpty(inputParam)) && (inputParam.contains("sign="))) {
+    if ((StringUtils.isNotEmpty(inputParam)) && (inputParam.contains("sign="))) {
       inputParam = GenerateRsaUtil.removeUrlParams(inputParam, new String[] { "sign" });
     }
 

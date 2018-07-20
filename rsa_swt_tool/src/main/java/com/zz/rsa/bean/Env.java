@@ -1,13 +1,10 @@
 package com.zz.rsa.bean;
 
-import com.alibaba.common.lang.SystemUtil;
-import com.alibaba.common.lang.SystemUtil.OsInfo;
-
 public class Env
 {
   public static String OS = "window";
 
-  public static String os_name = SystemUtil.getOsInfo().getName();
+  public static String os_name = System.getProperty("os.name");
 
   static { if (os_name.toLowerCase().contains("mac"))
       OS = "mac";
