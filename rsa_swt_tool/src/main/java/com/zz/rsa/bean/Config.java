@@ -12,12 +12,12 @@ public class Config
   public static final String RSA_1024 = "1024";
   public static final String RSA_2048 = "2048";
   public static final String KEY_FILE_SUFFIX = ".txt";
-  public static final String RSA_PRIVATE_KEY_FILE_NAME = "应用私钥";
-  public static final String RSA_PUBLIC_KEY_FILE_NAME = "应用公钥";
-  public static final String RSA_PRIVATE_KEY_TMP_FILE_NAME = "应用私钥_tmp.txt";
-  public static final String SIGN_STEP_FILE_NAME = "签名步骤";
-  public static final String CHECK_SIGN_STEP_FILE_NAME = "验签步骤";
-  public static final String KEY_SAVE_PATH = System.getProperty("user.dir") + System.getProperty("file.separator") + "RSA密钥/";
+  public static final String RSA_PRIVATE_KEY_FILE_NAME = "merchant-privateKey";
+  public static final String RSA_PUBLIC_KEY_FILE_NAME = "merchant-publicKey";
+  public static final String RSA_PRIVATE_KEY_TMP_FILE_NAME = "merchant_privateKey_tmp.txt";
+  public static final String SIGN_STEP_FILE_NAME = "sign_step";
+  public static final String CHECK_SIGN_STEP_FILE_NAME = "check_sign_step";
+  public static final String KEY_SAVE_PATH = System.getProperty("user.dir") + System.getProperty("file.separator") + "RSA_KEY/";
 
   public static String CURRENT_SIGN_TYPE = "RSA";
 
