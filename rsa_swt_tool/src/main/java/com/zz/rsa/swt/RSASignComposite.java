@@ -229,9 +229,15 @@ public class RSASignComposite extends Composite {
 
         try {
           String inputParam = RSASignComposite.this.text_input.getText();
-
-          Map<String, String> params = JSON.parseObject(inputParam,
-                  Map.class);
+          Map<String, String> params = null;
+          try {
+            params = JSON.parseObject(inputParam,Map.class);
+          } catch (Exception e1) {
+            MessageDialog.openWarning(RSASignComposite.this.getShell(), "warming",
+                    "the request type is not a Legal JSON");
+            writeLog("the request type is not a Legal JSON");
+            return;
+          }
           inputParam = getSignContent(params);
           System.out.println("params----:" +
                   JSON.toJSONString(params));
@@ -429,5 +435,12 @@ public class RSASignComposite extends Composite {
     step = Integer.valueOf(step.intValue() + 1);
 
     return inputParam;
+  }
+  private void writeLog(String message){
+    try {
+      RsaKey.appendTxtFile("error_log",  message + "\r\n");
+    } catch (IOException e2) {
+      e2.printStackTrace();
+    }
   }
 }

@@ -227,19 +227,28 @@ public class RSACheckSignComposite extends Composite
         } catch (Exception ex) {
           MessageDialog.openWarning(RSACheckSignComposite.this.getShell(), "error",
             "steps file open failed");
+          writeLog("steps file open failed");
         }
       }
     });
-    check_sign_btn.addSelectionListener(new SelectionAdapter()
-    {
-      public void widgetSelected(SelectionEvent e)
-      {
+    check_sign_btn.addSelectionListener(new SelectionAdapter(){
+
+      public void widgetSelected(SelectionEvent e){
         SignUtils signUtils = new SignUtilsImpl();
         String inputParams = RSACheckSignComposite.this.text_input.getText().trim();
-        Map<String, String> params = JSON.parseObject(inputParams,Map.class);
+        Map<String, String> params = null;
+        try {
+          params = JSON.parseObject(inputParams,Map.class);
+        } catch (Exception e1) {
+          MessageDialog.openWarning(RSACheckSignComposite.this.getShell(), "warming",
+                  "the request type is not a Legal JSON");
+          writeLog("the request type is not a Legal JSON");
+          return;
+        }
         if (RSACheckSignComposite.this.inputParamDemo.equals(inputParams)) {
           MessageDialog.openWarning(RSACheckSignComposite.this.getShell(), "warming",
             "please input context of response");
+          writeLog("please input context of response");
           return;
         }
         String publicKey = RSACheckSignComposite.this.public_text.getText();
@@ -247,6 +256,7 @@ public class RSACheckSignComposite extends Composite
         if (RSACheckSignComposite.this.inputPublicKeyDemo.equals(publicKey)) {
           MessageDialog.openWarning(RSACheckSignComposite.this.getShell(), "warming",
             "please input platform publicKey!");
+          writeLog("please input platform publicKey!");
           return;
         }
 
@@ -254,11 +264,13 @@ public class RSACheckSignComposite extends Composite
           if ((publicKey.contains("\r\n")) || (publicKey.contains("\n")))
             MessageDialog.openWarning(RSACheckSignComposite.this.getShell(), "warming",
               "There can be no line breaks on the platform public key. Please delete the line break and try again!");
+          writeLog("There can be no line breaks on the platform public key. Please delete the line break and try again!");
         }
         else
         {
           MessageDialog.openWarning(RSACheckSignComposite.this.getShell(), "warming",
             "Please enter the payment platform public key!");
+          writeLog("Please enter the payment platform public key!");
           return;
         }
         String inputString = "";
@@ -283,7 +295,7 @@ public class RSACheckSignComposite extends Composite
         }
         catch (Exception e1){
           MessageDialog.openWarning(RSACheckSignComposite.this.getShell(), "warming", "response data type form error!");
-          e1.printStackTrace();
+          writeLog(e1.getMessage());
           return;
         }
 
@@ -343,6 +355,13 @@ public class RSACheckSignComposite extends Composite
       button_radio_gbk.setSelection(true);
   }
 
+  private void writeLog(String message){
+    try {
+      RsaKey.appendTxtFile("error_log",  message + "\r\n");
+    } catch (IOException e2) {
+      e2.printStackTrace();
+    }
+  }
   public void writeCheckSignStepHead(String inputParam, String signStr)
     throws IOException
   {

@@ -19,11 +19,6 @@
             <version>2.6</version>
         </dependency>
         <dependency>
-            <groupId>org.eclipse.core.commands</groupId>
-            <artifactId>eclipse_core_commands</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-        <dependency>
             <groupId>org.eclipse.core.runtime</groupId>
             <artifactId>eclipse_core_runtime</artifactId>
             <version>1.0.0</version>
