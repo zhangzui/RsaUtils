@@ -39,13 +39,7 @@ public class RSASignComposite extends Composite {
   private Text text_privatekey;
   private Text text_sign;
   private String waitCheckSignStr;
-  private String inputParamDemo = "{\n" + "    \"charset\":\"utf-8\",\n" +
-          "    \"data\":\"U8CeJAT3sMSq44YlNGp/9C0pM42j3Jdql9G5GgZTMh8=\",\n" +
-          "    \"appId\":\"00001\",\n" + "    \"signType\":\"RSA2\",\n" +
-          "    \"version\":\"1.0.0\",\n" + "    \"apiType\":\"test\",\n" +
-          "    \"encryptType\":\"AES\",\n" +
-          "    \"timestamp\":\"2018-07-23 10:07:176\",\n" +
-          "    \"merchantNo\":\"00001\"\n" + "}";
+  private String inputParamDemo = "{\"charset\":\"utf-8\",\"data\":\"U8CeJAT3sMSq44YlNGp/9C0pM42j3Jdql9G5GgZTMh8=\",\"appId\":\"00001\",\"signType\":\"RSA2\",\"version\":\"1.0.0\",\"apiType\":\"test\",\"encryptType\":\"AES\",\"timestamp\":\"2018-07-23 10:07:176\",\"merchantNo\":\"00001\"}";
   private String inputPrivateKeyDemo = "Please enter the merchant application private key, this private key is the only document that the merchant calls the platform interface to conduct transactions, please be cautious!";
   private Button button_6;
 

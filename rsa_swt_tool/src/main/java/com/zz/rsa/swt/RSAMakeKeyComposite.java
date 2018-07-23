@@ -356,7 +356,7 @@ public class RSAMakeKeyComposite extends Composite
             }
             RSAMakeKeyComposite.this.text_privatekey.setText(result[0]);
             RSAMakeKeyComposite.this.text_publickey.setText(result[1]);
-            RSAMakeKeyComposite.this.privateKeyPath = SupportUtil.writeKeyFile(new String[] { "merchant privateKey" + keyType.getLength(), "merchant publicKey" + keyType.getLength() }, result);
+            RSAMakeKeyComposite.this.privateKeyPath = SupportUtil.writeKeyFile(new String[] { "privateKey" + keyType.getLength(), "publicKey" + keyType.getLength() }, result);
             RSAMakeKeyComposite.this.label_notice.setText("The key file was successfully saved to【" + RSAMakeKeyComposite.this.privateKeyPath + "】,Click the 'open Key File Path' button to view");
           }
           else {
