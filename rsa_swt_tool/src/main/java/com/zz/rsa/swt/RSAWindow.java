@@ -21,8 +21,7 @@ import org.eclipse.swt.widgets.TabFolder;
 import java.io.File;
 import java.io.IOException;
 
-public class RSAWindow
-{
+public class RSAWindow {
     public static Shell shell;
     public static RSASignComposite rsaSignComposite;
     public static RSACheckSignComposite rsaCheckSignComposite;
@@ -32,14 +31,14 @@ public class RSAWindow
     public static void main(String[] args) {
         Display display = Display.getDefault();
         shell = new Shell(display, 64);
-        shell.setText("  RSA签名验签工具(V1.4)  ");
+        shell.setText("RSA-Utils (version:1.0.0)");
         showLogo();
 
         if (Env.isWindow()) {
-            String fileName = Config.KEY_SAVE_PATH + "应用私钥_tmp.txt";
+            String fileName = Config.KEY_SAVE_PATH + "publicKey_tmp.txt";
             if ((fileName != null) && (fileName.contains("  "))) {
-                MessageDialog.openWarning(shell, "警告",
-                        "文件路径不能有连续两个以上空格！\r\n" + fileName);
+                MessageDialog.openWarning(shell, "warming",
+                        "File path cannot have more than two consecutive spaces！\r\n" + fileName);
                 return;
             }
         }

@@ -1,5 +1,6 @@
 package com.zz.rsa.swt;
 
+import com.alibaba.fastjson.JSON;
 import com.zz.rsa.bean.Config;
 import com.zz.rsa.utils.GenerateRsaUtil;
 import com.zz.rsa.utils.RSA;
@@ -10,6 +11,11 @@ import com.test.common.crypto.SignUtils;
 import com.test.common.crypto.SignUtilsImpl;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -32,8 +38,19 @@ public class RSACheckSignComposite extends Composite
   private Text text_input;
   private Text public_text;
   private String waitCheckSignStr;
-  private String inputParamDemo = "https请求同步返回报文无需验签。\r\n异步通知报文格式：total_amount=2.00&buyer_id=2088102116773037&body=大乐透2.1&trade_no=2016071921001003030200089909&refund_fee=0.00&notify_time=2016-07-19 14:10:49&subject=大乐透2.1&sign_type=RSA&charset=utf-8&notify_type=trade_status_sync&out_trade_no=0719141034-6418&gmt_close=2016-07-19 14:10:46&gmt_payment=2016-07-19 14:10:47&trade_status=TRADE_SUCCESS&version=1.0&sign=kPbQIjX&gmt_create=2016-07-19 14:10:44&app_id=2015102700040153&seller_id=2088102119685838&notify_id=4a91b7a78a503640467525113fb7d8bg8e";
-  private String inputPublicKeyDemo = "请输入支付平台提供的公钥，如不知道，可以点击查看公钥进行查看！";
+  private String inputParamDemo = "{\n" +
+          "    \"charset\":\"utf-8\",\n" +
+          "    \"data\":\"U8CeJAT3sMSq44YlNGp/9C0pM42j3Jdql9G5GgZTMh8=\",\n" +
+          "    \"appId\":\"00001\",\n" +
+          "    \"sign\":\"bouNEwC76PpgXwaU+OO56rbeeMmLS8CMn2+isWHD4Y6LDJP1JAB5Wk7aHpVSHy4CIKbyi7ONsX0l06HM+GPhu8Pgw3zN7c8a23wsVsusAVi1eKJFdSljIsxbachkFGyt8MpyJmLmS97cTjToa3uqTpr4qTwuM2xFpe7gGcrOj7MLhrANh+pjlqVOaPBqB8cngQoZFhYM0B0F6teEFTjcN9aV7Js8qhxSOxqGWaf39z0nMVFC+SyJrUUXat9b7i0hAFpQVj3wdw0dNcyWfnlOzK1IQUWgvDOzR6xXF0nJs+/eIeNIjs0CCoG0xG3//P1mFJkM+wf6pgCjRivWXA2imQ==\",\n" +
+          "    \"signType\":\"RSA2\",\n" +
+          "    \"version\":\"1.0.0\",\n" +
+          "    \"apiType\":\"test\",\n" +
+          "    \"encryptType\":\"AES\",\n" +
+          "    \"timestamp\":\"2018-07-23 10:07:176\",\n" +
+          "    \"merchantNo\":\"00001\"\n" +
+          "}";
+  private String inputPublicKeyDemo = "Please enter the public key provided by the payment platform. If you don't know, you can contact the platform developer!";
 
   public static void main(String[] args)
   {
@@ -47,7 +64,7 @@ public class RSACheckSignComposite extends Composite
     Label label_title = new Label(this, 0);
     label_title.setBounds(150, 5, 425, 20);
 
-    label_title.setText("此功能仅支持支付平台异步通知做验签，请勿对其他报文做验签！");
+    label_title.setText("This feature only supports responses that require a checksum");
     label_title.setBackground(getDisplay().getSystemColor(7));
 
     Display display = parent.getDisplay();
@@ -65,7 +82,7 @@ public class RSACheckSignComposite extends Composite
 //    });
     Label label = new Label(this, 0);
     label.setBounds(5, 65, 90, 20);
-    label.setText("响应报文：");
+    label.setText("Response message:");
 
     this.text_input = new Text(this, 2626);
     this.text_input.setBounds(100, 30, 670, 100);
@@ -101,7 +118,7 @@ public class RSACheckSignComposite extends Composite
 //    });
     Label label_1 = new Label(this, 0);
     label_1.setBounds(5, 170, 90, 20);
-    label_1.setText("支付平台公钥：");
+    label_1.setText("public key:");
 
     this.public_text = new Text(this, 2626);
     this.public_text.setBounds(100, 140, 670, 80);
@@ -126,7 +143,7 @@ public class RSACheckSignComposite extends Composite
     });
     Label lblcharset = new Label(this, 0);
     lblcharset.setBounds(5, 235, 90, 20);
-    lblcharset.setText("字符集：");
+    lblcharset.setText("charset：");
 
     Group chasetGroup = new Group(this, 32);
     chasetGroup.setBounds(100, 220, 670, 40);
@@ -144,7 +161,7 @@ public class RSACheckSignComposite extends Composite
 
     Label lblalgorithm = new Label(this, 0);
     lblalgorithm.setBounds(5, 273, 90, 20);
-    lblalgorithm.setText("验签方式：");
+    lblalgorithm.setText("CheckingType：");
 
     Group algorithmGroup = new Group(this, 32);
     algorithmGroup.setBounds(100, 260, 670, 40);
@@ -158,7 +175,7 @@ public class RSACheckSignComposite extends Composite
       }
     });
     rsa.setText(Config.SIGN_TYPE_RSA);
-    rsa.setBounds(120, 15, 84, 20);
+    rsa.setBounds(300, 15, 150, 20);
 
     final Button rsa2 = new Button(algorithmGroup, 16);
     rsa2.addSelectionListener(new SelectionAdapter()
@@ -169,7 +186,7 @@ public class RSACheckSignComposite extends Composite
       }
     });
     rsa2.setText(Config.SIGN_TYPE_RSA2);
-    rsa2.setBounds(5, 15, 84, 20);
+    rsa2.setBounds(5, 15, 150, 20);
 
     if (rsaAlgorithm.equalsIgnoreCase(Config.RSA_SHA256))
       rsa2.setSelection(true);
@@ -178,7 +195,7 @@ public class RSACheckSignComposite extends Composite
     }
 
     Button check_sign_btn = new Button(this, 0);
-    check_sign_btn.setText("开始验签");
+    check_sign_btn.setText("Start the check");
     check_sign_btn.setBounds(100, 307, 100, 35);
 
     Label label_line = new Label(this, 258);
@@ -187,7 +204,7 @@ public class RSACheckSignComposite extends Composite
 
     Label setp_one = new Label(this, 0);
     setp_one.setBounds(5, 360, 90, 20);
-    setp_one.setText("取出sign");
+    setp_one.setText("get sign");
 
     final Text sign_value_text = new Text(this, 2626);
     sign_value_text.setBounds(100, 360, 670, 70);
@@ -195,7 +212,7 @@ public class RSACheckSignComposite extends Composite
 
     Label for_sign_string = new Label(this, 0);
     for_sign_string.setBounds(5, 435, 90, 20);
-    for_sign_string.setText("组成待验签串");
+    for_sign_string.setText("Composition check string");
 
     final Text for_sign_text = new Text(this, 2626);
     for_sign_text.setBounds(100, 435, 670, 100);
@@ -203,7 +220,7 @@ public class RSACheckSignComposite extends Composite
 
     Label setp_two = new Label(this, 0);
     setp_two.setBounds(5, 545, 90, 20);
-    setp_two.setText("验签结果");
+    setp_two.setText("Test result");
 
     final Text check_sign_result = new Text(this, 2114);
     check_sign_result.setBounds(100, 545, 670, 30);
@@ -217,10 +234,10 @@ public class RSACheckSignComposite extends Composite
     {
       public void widgetSelected(SelectionEvent e) {
         try {
-          RsaKey.openTxtFile("验签步骤");
+          RsaKey.openTxtFile("check sign steps");
         } catch (Exception ex) {
-          MessageDialog.openWarning(RSACheckSignComposite.this.getShell(), "错误", 
-            "步骤文件打开失败！");
+          MessageDialog.openWarning(RSACheckSignComposite.this.getShell(), "error",
+            "steps file open failed");
         }
       }
     });
@@ -230,90 +247,85 @@ public class RSACheckSignComposite extends Composite
       {
         SignUtils signUtils = new SignUtilsImpl();
         String inputParams = RSACheckSignComposite.this.text_input.getText().trim();
+        Map<String, String> params = JSON.parseObject(inputParams,Map.class);
         if (RSACheckSignComposite.this.inputParamDemo.equals(inputParams)) {
-          MessageDialog.openWarning(RSACheckSignComposite.this.getShell(), "警告", 
-            "请输入报文内容");
+          MessageDialog.openWarning(RSACheckSignComposite.this.getShell(), "warming",
+            "please input context of response");
           return;
         }
         String publicKey = RSACheckSignComposite.this.public_text.getText();
 
         if (RSACheckSignComposite.this.inputPublicKeyDemo.equals(publicKey)) {
-          MessageDialog.openWarning(RSACheckSignComposite.this.getShell(), "警告", 
-            "请输入支付平台公钥！");
+          MessageDialog.openWarning(RSACheckSignComposite.this.getShell(), "warming",
+            "please input platform publicKey!");
           return;
         }
 
         if (StringUtils.isNotBlank(publicKey)) {
           if ((publicKey.contains("\r\n")) || (publicKey.contains("\n")))
-            MessageDialog.openWarning(RSACheckSignComposite.this.getShell(), "警告", 
-              "平台公钥不能存在换行，请删除换行后再试！");
+            MessageDialog.openWarning(RSACheckSignComposite.this.getShell(), "warming",
+              "There can be no line breaks on the platform public key. Please delete the line break and try again!");
         }
         else
         {
-          MessageDialog.openWarning(RSACheckSignComposite.this.getShell(), "警告", 
-            "请输入支付平台公钥！");
+          MessageDialog.openWarning(RSACheckSignComposite.this.getShell(), "warming",
+            "Please enter the payment platform public key！");
           return;
         }
         String inputString = "";
         String signStr = "";
         try {
-          String signType = GenerateRsaUtil.getUrlParams(inputParams, "sign_type");
+//          String signType = GenerateRsaUtil.getUrlParams(inputParams, "sign_type");
+//          signStr = GenerateRsaUtil.getUrlParams(inputParams, "sign");
 
-          if (rsa2.getSelection()) {
-            if ((signType != null) && (!"".equals(signType)) && (!Config.SIGN_TYPE_RSA2.equals(signType))) {
-              MessageDialog.openWarning(RSACheckSignComposite.this.getShell(), "错误", 
-                "签名方式错误，请检查输入参数中sign_type是否与所选签名方式相同！");
-            }
-          }
-          else if ((rsa.getSelection()) && 
-            (signType != null) && (!"".equals(signType)) && (!Config.SIGN_TYPE_RSA.equals(signType))) {
-            MessageDialog.openWarning(RSACheckSignComposite.this.getShell(), "错误", 
-              "签名方式错误，请检查输入参数中sign_type是否与所选签名方式相同！");
-            return;
-          }
+          String signType = params.get("signType");
+          signStr = params.get("sign");
 
-          signStr = GenerateRsaUtil.getUrlParams(inputParams, "sign");
-          inputString = RSACheckSignComposite.this.getInputString(inputParams, signStr);
+          //inputString = RSACheckSignComposite.this.getInputString(inputParams, signStr);
+          Map<String, String> newCheckSignMap = params;
+          newCheckSignMap.remove("sign");
+          inputString = getSignContent(newCheckSignMap);
+
+          waitCheckSignStr = inputString;
+
         }
-        catch (Exception e1)
-        {
-          MessageDialog.openWarning(RSACheckSignComposite.this.getShell(), "警告", "响应报文格式错误！");
+        catch (Exception e1){
+          MessageDialog.openWarning(RSACheckSignComposite.this.getShell(), "warming", "response data type form error！");
           e1.printStackTrace();
           return;
         }
 
         if (StringUtils.isBlank(signStr)) {
-          MessageDialog.openWarning(RSACheckSignComposite.this.getShell(), "警告", 
-            "缺少签名参数sign！");
+          MessageDialog.openWarning(RSACheckSignComposite.this.getShell(), "warming",
+            "less param of sign");
           return;
         }
 
         if (StringUtils.isBlank(inputString)) {
-          MessageDialog.openWarning(RSACheckSignComposite.this.getShell(), "警告", 
-            "请输入完整报文！");
+          MessageDialog.openWarning(RSACheckSignComposite.this.getShell(), "warming",
+            "please input complete response data！");
           return;
         }
         for_sign_text.setText(RSACheckSignComposite.this.waitCheckSignStr);
         sign_value_text.setText(signStr);
 
         if ((StringUtils.isBlank(inputString)) || (StringUtils.isBlank(signStr))) {
-          MessageDialog.openWarning(RSACheckSignComposite.this.getShell(), "警告", 
-            "报文错误或签名丢失！");
+          MessageDialog.openWarning(RSACheckSignComposite.this.getShell(), "warming",
+            "data error or sign is lost");
           return;
         }
 
         boolean result = RSA.verify(inputString, signStr, GenerateRsaUtil.replaceBlank(publicKey), RSACheckSignComposite.rsaAlgorithm, RSACheckSignComposite.charset);
         if (result) {
-          check_sign_result.setText("验签成功");
+          check_sign_result.setText("check sign success");
           check_detail.setEnabled(true);
         } else {
-          check_sign_result.setText("验签失败");
+          check_sign_result.setText("check sign failed");
           check_detail.setEnabled(true);
         }
-        try
-        {
-          RsaKey.appendTxtFile("验签步骤", "三、验签结果：\r\n");
-          RsaKey.appendTxtFile("验签步骤", "【" + (result ? "验签成功" : "验签失败") + "】\r\n");
+        try {
+          RsaKey.appendTxtFile("check sign steps", "三、验签结果：\r\n");
+          RsaKey.appendTxtFile("check sign steps", "【" + (result ? "验签成功" : "验签失败") + "】\r\n");
         } catch (IOException e1) {
           e1.printStackTrace();
         }
@@ -342,17 +354,37 @@ public class RSACheckSignComposite extends Composite
   public void writeCheckSignStepHead(String inputParam, String signStr)
     throws IOException
   {
-    RsaKey.deleteTxtFile("验签步骤");
+    RsaKey.deleteTxtFile("check sign steps");
 
-    RsaKey.appendTxtFile("验签步骤", "一、验签准备\r\n");
-    RsaKey.appendTxtFile("验签步骤", "1.原始报文：\r\n");
-    RsaKey.appendTxtFile("验签步骤", "【" + inputParam + "】\r\n\r\n");
+    RsaKey.appendTxtFile("check sign steps", "一、验签准备\r\n");
+    RsaKey.appendTxtFile("check sign steps", "1.原始报文：\r\n");
+    RsaKey.appendTxtFile("check sign steps", "【" + inputParam + "】\r\n\r\n");
 
-    RsaKey.appendTxtFile("验签步骤", "2.验签公钥：\r\n");
-    RsaKey.appendTxtFile("验签步骤", "【" + this.public_text.getText() + "】\r\n\r\n");
+    RsaKey.appendTxtFile("check sign steps", "2.验签公钥：\r\n");
+    RsaKey.appendTxtFile("check sign steps", "【" + this.public_text.getText() + "】\r\n\r\n");
 
-    RsaKey.appendTxtFile("验签步骤", "3.从报文取出签名值sign：\r\n");
-    RsaKey.appendTxtFile("验签步骤", "【" + signStr + "】\r\n\r\n");
+    RsaKey.appendTxtFile("check sign steps", "3.从报文取出签名值sign：\r\n");
+    RsaKey.appendTxtFile("check sign steps", "【" + signStr + "】\r\n\r\n");
+  }
+
+  public static String getSignContent(Map<String, String> sortedParams) {
+    StringBuffer content = new StringBuffer();
+    List<String> keys = new ArrayList<String>(sortedParams.keySet());
+    Collections.sort(keys);
+
+    int index = 0;
+
+    for (int i = 0; i < keys.size(); i++) {
+      String key = keys.get(i);
+      String value = sortedParams.get(key);
+
+      if (StringUtils.isNotBlank(key) && StringUtils.isNotBlank(value)) {
+        content.append(((index == 0) ? "" : "&") + key + "=" + value);
+        index++;
+      }
+    }
+
+    return content.toString();
   }
 
   public String getInputString(String inputParam, String signStr)
@@ -360,7 +392,7 @@ public class RSACheckSignComposite extends Composite
   {
     writeCheckSignStepHead(inputParam, signStr);
 
-    RsaKey.appendTxtFile("验签步骤", "二、组成待验签串：\r\n");
+    RsaKey.appendTxtFile("check sign steps", "二、组成待验签串：\r\n");
 
     Integer step = Integer.valueOf(1);
 
@@ -373,8 +405,8 @@ public class RSACheckSignComposite extends Composite
     inputParam = removeGatewayUrl;
 
     inputParam = GenerateRsaUtil.removeUrlEmptyParams(inputParam, "验签步骤");
-    RsaKey.appendTxtFile("验签步骤", step + ".剔除空值参数：\r\n");
-    RsaKey.appendTxtFile("验签步骤", "【" + inputParam + "】\r\n\r\n");
+    RsaKey.appendTxtFile("check sign steps", step + ".剔除空值参数：\r\n");
+    RsaKey.appendTxtFile("check sign steps", "【" + inputParam + "】\r\n\r\n");
     step = Integer.valueOf(step.intValue() + 1);
 
     if ((!StringUtils.isBlank(inputParam)) && (inputParam.contains("sign="))) {
@@ -383,13 +415,13 @@ public class RSACheckSignComposite extends Composite
     if ((!StringUtils.isBlank(inputParam)) && (inputParam.contains("sign_type="))) {
       inputParam = GenerateRsaUtil.removeUrlParams(inputParam, new String[] { "sign_type" });
     }
-    RsaKey.appendTxtFile("验签步骤", step + ".剔除sign、sign_type参数：\r\n");
-    RsaKey.appendTxtFile("验签步骤", "【" + inputParam + "】\r\n\r\n");
+    RsaKey.appendTxtFile("check sign steps", step + ".剔除sign、sign_type参数：\r\n");
+    RsaKey.appendTxtFile("check sign steps", "【" + inputParam + "】\r\n\r\n");
     step = Integer.valueOf(step.intValue() + 1);
 
     inputParam = SupportUtil.sortParams(inputParam);
-    RsaKey.appendTxtFile("验签步骤", step + "、排序：\r\n");
-    RsaKey.appendTxtFile("验签步骤", "【" + inputParam + "】\r\n\r\n");
+    RsaKey.appendTxtFile("check sign steps", step + "、排序：\r\n");
+    RsaKey.appendTxtFile("check sign steps", "【" + inputParam + "】\r\n\r\n");
     step = Integer.valueOf(step.intValue() + 1);
 
     this.waitCheckSignStr = inputParam;

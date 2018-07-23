@@ -32,7 +32,8 @@ public class RSAKeyFormatComposite extends Composite
   private Text text_output_rsa;
   private String privateKeyPath = Config.KEY_SAVE_PATH;
 
-  private String inputPrivateKeyDemo = "请输入商户应用私钥，此私钥是商户调用支付平台接口进行交易的唯一凭证，请谨慎保管！";
+  //private String inputPrivateKeyDemo = "请输入商户应用私钥，此私钥是商户调用支付平台接口进行交易的唯一凭证，请谨慎保管！";
+  private String inputPrivateKeyDemo = "Please enter the merchant application private key. This private key is the only document that the merchant calls the payment platform interface to conduct the transaction. Please keep it cautious!";
 
   public RSAKeyFormatComposite(Composite parent, int style)
   {
@@ -40,8 +41,8 @@ public class RSAKeyFormatComposite extends Composite
 
     final Button clip_public_button = new Button(this, 8);
     clip_public_button.setBounds(646, 543, 100, 35);
-    clip_public_button.setToolTipText("点击复制文本框中信息至剪切板");
-    clip_public_button.setText("复制");
+    clip_public_button.setToolTipText("Click to copy the information in the text box to the clipboard");
+    clip_public_button.setText("copy");
     clip_public_button.setEnabled(false);
     FormData fd_clip_public_button = new FormData();
 
@@ -52,7 +53,7 @@ public class RSAKeyFormatComposite extends Composite
       public void widgetSelected(SelectionEvent e) {
         String output = RSAKeyFormatComposite.this.text_output_rsa.getText().trim();
         if ((output == null) || ("".equals(output))) {
-          RSAKeyFormatComposite.this.text_output_rsa.setText("文本框中无文本信息。\n");
+          RSAKeyFormatComposite.this.text_output_rsa.setText("No text information in the text box。\n");
           return;
         }
 
@@ -99,7 +100,7 @@ public class RSAKeyFormatComposite extends Composite
     Button button = new Button(this, 0);
     button.setBounds(100, 15, 100, 35);
     button.setText("read in local file");
-    button.setToolTipText("将密钥文件读入到文本框中，转成一行。");
+    button.setToolTipText("Read the key file into the text box and convert it into a line。");
     button.addSelectionListener(new SelectionAdapter()
     {
       public void widgetSelected(SelectionEvent e) {
@@ -115,7 +116,7 @@ public class RSAKeyFormatComposite extends Composite
       }
     });
     final Button open_key_btn = new Button(this, 0);
-    open_key_btn.setToolTipText("需要生成公钥！");
+    open_key_btn.setToolTipText("Need to generate a public key！");
     open_key_btn.addSelectionListener(new SelectionAdapter()
     {
       public void widgetSelected(SelectionEvent e) {
@@ -133,13 +134,13 @@ public class RSAKeyFormatComposite extends Composite
         }
         catch (Exception e1)
         {
-          GenerateRsaUtil.info("打开私钥文件失败，原因：系统异常 {}", new Object[] { e1 });
+          GenerateRsaUtil.info("Failed to open private key file, reason: system exception {}", new Object[] { e1 });
 
           return;
         }
       }
     });
-    open_key_btn.setText("打开密钥文件路径");
+    open_key_btn.setText("Open the key file path");
     open_key_btn.setBounds(620, 313, 130, 35);
     open_key_btn.setEnabled(false);
 

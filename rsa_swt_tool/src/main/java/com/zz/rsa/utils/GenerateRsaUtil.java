@@ -25,13 +25,13 @@ public class GenerateRsaUtil
 
     if (Env.isMac())
       execCmd(new String[] { 
-        "genrsa -out", Config.KEY_SAVE_PATH + "应用私钥" + keyLength + ".txt", keyLength });
+        "genrsa -out", Config.KEY_SAVE_PATH + "privateKey" + keyLength + ".txt", keyLength });
     else {
       execCmd(new String[] { 
-        "genrsa -out", "\"" + Config.KEY_SAVE_PATH + "应用私钥" + keyLength + ".txt" + "\"", keyLength });
+        "genrsa -out", "\"" + Config.KEY_SAVE_PATH + "privateKey" + keyLength + ".txt" + "\"", keyLength });
     }
 
-    return new File(Config.KEY_SAVE_PATH + "应用私钥" + keyLength + ".txt").getAbsolutePath();
+    return new File(Config.KEY_SAVE_PATH + "privateKey" + keyLength + ".txt").getAbsolutePath();
   }
 
   public static String mkRsaPrivateKey(String privateKeyLength)
@@ -51,13 +51,13 @@ public class GenerateRsaUtil
 
     if (Env.isMac())
       execCmd(new String[] { 
-        "rsa -in", privateKeyFile, "-pubout -out", Config.KEY_SAVE_PATH + "应用公钥" + keyLength + ".txt" });
+        "rsa -in", privateKeyFile, "-pubout -out", Config.KEY_SAVE_PATH + "publicKey" + keyLength + ".txt" });
     else {
       execCmd(new String[] { 
-        "rsa -in", "\"" + privateKeyFile + "\"", "-pubout -out", "\"" + Config.KEY_SAVE_PATH + "应用公钥" + keyLength + ".txt" + "\"" });
+        "rsa -in", "\"" + privateKeyFile + "\"", "-pubout -out", "\"" + Config.KEY_SAVE_PATH + "publicKey" + keyLength + ".txt" + "\"" });
     }
 
-    return new File(Config.KEY_SAVE_PATH + "应用公钥" + keyLength + ".txt").getAbsolutePath();
+    return new File(Config.KEY_SAVE_PATH + "publicKey" + keyLength + ".txt").getAbsolutePath();
   }
 
   public static String getKeyFromFile(String keyFilePath)
@@ -293,8 +293,8 @@ public class GenerateRsaUtil
   }
 
   public static void clearHeadBottom(Integer keyLength) throws Exception {
-    String privateKeyFilePath = Config.KEY_SAVE_PATH + "应用私钥" + keyLength + ".txt";
-    String publicKeyFilePath = Config.KEY_SAVE_PATH + "应用公钥" + keyLength + ".txt";
+    String privateKeyFilePath = Config.KEY_SAVE_PATH + "privateKey" + keyLength + ".txt";
+    String publicKeyFilePath = Config.KEY_SAVE_PATH + "publicKey" + keyLength + ".txt";
     String privateKey = RsaKey.getKeyFromFile(privateKeyFilePath);
     String publicKey = RsaKey.getKeyFromFile(publicKeyFilePath);
 

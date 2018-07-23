@@ -21,9 +21,9 @@ public class Config
 
   public static String CURRENT_SIGN_TYPE = "RSA";
 
-  public static String SIGN_TYPE_RSA = "RSA";
+  public static String SIGN_TYPE_RSA = "RSA(SHA1withRSA)";
 
-  public static String SIGN_TYPE_RSA2 = "RSA2";
+  public static String SIGN_TYPE_RSA2 = "RSA2(SHA256withRSA)";
 
   public static String DEVLEPMENT_LANGUAGE_JAVA = "JAVA";
 

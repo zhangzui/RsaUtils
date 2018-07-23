@@ -69,6 +69,16 @@
             <artifactId>alipay_sign</artifactId>
             <version>1.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>org.eclipse.core.commands</artifactId>
+            <version>3.6.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.6</version>
+        </dependency>
     </dependencies>
 
 

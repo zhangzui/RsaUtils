@@ -16,7 +16,8 @@ public class RsaKey
   public static String[] openMacTxteditCmd;
   public static String openbrowser = "rundll32 url.dll,FileProtocolHandler ";
 
-  static { openssl = "openssl\\bin\\openssl.exe";
+  static {
+    openssl = "openssl\\bin\\openssl.exe";
     txtedit = "cmd /c start \"\" ";
     String os = System.getProperty("os.name");;
     if (os.toLowerCase().contains("mac")) {
@@ -41,15 +42,15 @@ public class RsaKey
 
     if (Env.isMac()) {
       String[] cmdStr = { openssl, "rsa", "-in", privateKeyFile, 
-        "-pubout", "-out", dir + "应用公钥" + keyLength + ".txt" };
+        "-pubout", "-out", dir + "publicKey" + keyLength + ".txt" };
       GenerateRsaUtil.runCMD(cmdStr);
     } else {
       Cmd cmd = new Cmd();
       cmd.exec(openssl + " rsa -in \"" + privateKeyFile + 
-        "\" -pubout -out \"" + dir + "应用公钥" + keyLength + ".txt" + "\"");
+        "\" -pubout -out \"" + dir + "publicKey" + keyLength + ".txt" + "\"");
       cmd.close();
     }
-    return new File(dir + "应用公钥" + keyLength + ".txt").getAbsolutePath();
+    return new File(dir + "publicKey" + keyLength + ".txt").getAbsolutePath();
   }
 
   public static String mkTempRsaPublicKeyFile(String privateKeyFile, String keyLength)
@@ -63,15 +64,15 @@ public class RsaKey
 
     if (Env.isMac()) {
       String[] cmdStr = { openssl, "rsa", "-in", privateKeyFile, 
-        "-pubout", "-out", dir + "应用公钥" + keyLength + timestr + ".txt" };
+        "-pubout", "-out", dir + "publicKey" + keyLength + timestr + ".txt" };
       GenerateRsaUtil.runCMD(cmdStr);
     } else {
       Cmd cmd = new Cmd();
       cmd.exec(openssl + " rsa -in \"" + privateKeyFile + 
-        "\" -pubout -out \"" + dir + "应用公钥" + keyLength + timestr + ".txt" + "\"");
+        "\" -pubout -out \"" + dir + "publicKey" + keyLength + timestr + ".txt" + "\"");
       cmd.close();
     }
-    return new File(dir + "应用公钥" + keyLength + timestr + ".txt").getAbsolutePath();
+    return new File(dir + "publicKey" + keyLength + timestr + ".txt").getAbsolutePath();
   }
 
   public static String getKeyFromFile(String file) throws Exception {
@@ -109,27 +110,27 @@ public class RsaKey
     int rsaType = check_rsa_type(key);
     switch (rsaType) {
     case 1:
-      fileName = fileName + "应用私钥";
+      fileName = fileName + "privateKey";
       key_file_content = "-----BEGIN RSA PRIVATE KEY-----\n" + split2Base64(key) + "\n-----END RSA PRIVATE KEY-----\n";
       break;
     case 2:
-      fileName = fileName + "应用私钥";
+      fileName = fileName + "privateKey";
       key_file_content = "-----BEGIN PRIVATE KEY-----\n" + split2Base64(key) + "\n-----END PRIVATE KEY-----\n";
       break;
     case 3:
-      fileName = fileName + "应用公钥";
+      fileName = fileName + "publicKey";
       key_file_content = "-----BEGIN PUBLIC KEY-----\n" + split2Base64(key) + "\n-----END PUBLIC KEY-----\n";
       break;
     case 4:
-      fileName = fileName + "应用私钥";
+      fileName = fileName + "privateKey";
       key_file_content = "-----BEGIN RSA PRIVATE KEY-----\n" + split2Base64(key) + "\n-----END RSA PRIVATE KEY-----\n";
       break;
     case 5:
-      fileName = fileName + "应用私钥";
+      fileName = fileName + "privateKey";
       key_file_content = "-----BEGIN PRIVATE KEY-----\n" + split2Base64(key) + "\n-----END PRIVATE KEY-----\n";
       break;
     case 6:
-      fileName = fileName + "应用公钥";
+      fileName = fileName + "publicKey";
       key_file_content = "-----BEGIN PUBLIC KEY-----\n" + split2Base64(key) + "\n-----END PUBLIC KEY-----\n";
     }
 
@@ -158,27 +159,27 @@ public class RsaKey
     int rsaType = check_rsa_type(key);
     switch (rsaType) {
     case 1:
-      fileName = fileName + "应用私钥";
+      fileName = fileName + "privateKey";
       key_file_content = "-----BEGIN RSA PRIVATE KEY-----\n" + split2Base64(key) + "\n-----END RSA PRIVATE KEY-----\n";
       break;
     case 2:
-      fileName = fileName + "应用私钥";
+      fileName = fileName + "privateKey";
       key_file_content = "-----BEGIN PRIVATE KEY-----\n" + split2Base64(key) + "\n-----END PRIVATE KEY-----\n";
       break;
     case 3:
-      fileName = fileName + "应用公钥";
+      fileName = fileName + "publicKey";
       key_file_content = "-----BEGIN PUBLIC KEY-----\n" + split2Base64(key) + "\n-----END PUBLIC KEY-----\n";
       break;
     case 4:
-      fileName = fileName + "应用私钥";
+      fileName = fileName + "privateKey";
       key_file_content = "-----BEGIN RSA PRIVATE KEY-----\n" + split2Base64(key) + "\n-----END RSA PRIVATE KEY-----\n";
       break;
     case 5:
-      fileName = fileName + "应用私钥";
+      fileName = fileName + "privateKey";
       key_file_content = "-----BEGIN PRIVATE KEY-----\n" + split2Base64(key) + "\n-----END PRIVATE KEY-----\n";
       break;
     case 6:
-      fileName = fileName + "应用公钥";
+      fileName = fileName + "publicKey";
       key_file_content = "-----BEGIN PUBLIC KEY-----\n" + split2Base64(key) + "\n-----END PUBLIC KEY-----\n";
     }
 
@@ -216,7 +217,7 @@ public class RsaKey
 
   public static String convert2pcks8(String priKey, String keyLength) throws Exception
   {
-    String fileName = Config.KEY_SAVE_PATH + "应用私钥_tmp.txt";
+    String fileName = Config.KEY_SAVE_PATH + "privateKey_tmp.txt";
     priKey = split2Base64(priKey);
     priKey = "-----BEGIN RSA PRIVATE KEY-----\n" + priKey;
     priKey = priKey + "\n-----END RSA PRIVATE KEY-----\n";
@@ -229,7 +230,7 @@ public class RsaKey
   }
 
   public static String convertPcks82Original(String priKeyPkcs8, String keyLength) throws Exception {
-    String fileName = Config.KEY_SAVE_PATH + "应用私钥_tmp.txt";
+    String fileName = Config.KEY_SAVE_PATH + "publicKey_tmp.txt";
     priKeyPkcs8 = split2Base64(priKeyPkcs8);
     priKeyPkcs8 = "-----BEGIN PRIVATE KEY-----\n" + priKeyPkcs8;
     priKeyPkcs8 = priKeyPkcs8 + "\n-----END PRIVATE KEY-----\n";
@@ -249,19 +250,19 @@ public class RsaKey
     String dir = Config.KEY_SAVE_PATH;
     if (Env.isMac()) {
       String[] cmdStr = { openssl, "pkcs8", "-inform", "PEM", "-in", privateKeyFile, 
-        "-outform", "PEM", "-nocrypt", "-out", dir + "应用私钥" + keyLength + ".txt" };
+        "-outform", "PEM", "-nocrypt", "-out", dir + "privateKey" + keyLength + ".txt" };
       GenerateRsaUtil.runCMD(cmdStr);
     } else {
       Cmd cmd = new Cmd();
       String s = null;
       s = openssl + " pkcs8 -inform PEM -in \"" + privateKeyFile + 
         "\" -outform PEM -nocrypt -out \"" + dir + 
-        "应用私钥" + keyLength + ".txt" + "\"";
+        "privateKey" + keyLength + ".txt" + "\"";
       cmd.exec(s);
       cmd.close();
     }
 
-    return new File(dir + "应用私钥" + keyLength + ".txt").getAbsolutePath();
+    return new File(dir + "privateKey" + keyLength + ".txt").getAbsolutePath();
   }
 
   public static String mkPkcs8FromPrivate(String privateKeyFile, String keyLength) throws Exception
@@ -272,16 +273,16 @@ public class RsaKey
     String dir = Config.KEY_SAVE_PATH;
     if (Env.isMac()) {
       String[] cmdStr = { openssl, "pkcs8", "-topk8", "-inform", "PEM", "-in", privateKeyFile, 
-        "-outform", "PEM", "-nocrypt", "-out", dir + "应用私钥" + keyLength + ".txt" };
+        "-outform", "PEM", "-nocrypt", "-out", dir + "privateKey" + keyLength + ".txt" };
       GenerateRsaUtil.runCMD(cmdStr);
     } else {
       Cmd cmd = new Cmd();
       cmd.exec(openssl + " pkcs8 -topk8 -inform PEM -in \"" + privateKeyFile + 
         "\" -outform PEM -nocrypt -out \"" + dir + 
-        "应用私钥" + keyLength + ".txt" + "\"");
+        "privateKey" + keyLength + ".txt" + "\"");
       cmd.close();
     }
-    return new File(dir + "应用私钥" + keyLength + ".txt").getAbsolutePath();
+    return new File(dir + "privateKey" + keyLength + ".txt").getAbsolutePath();
   }
 
   public static void openBrowserForUrl(String url)
@@ -360,8 +361,8 @@ public class RsaKey
   }
 
   public static void clearHeadBottom(String keyLength) throws Exception {
-    String privateKeyFilePath = Config.KEY_SAVE_PATH + "应用私钥" + ".txt";
-    String publicKeyFilePath = Config.KEY_SAVE_PATH + "应用公钥" + ".txt";
+    String privateKeyFilePath = Config.KEY_SAVE_PATH + "privateKey" + ".txt";
+    String publicKeyFilePath = Config.KEY_SAVE_PATH + "publicKey" + ".txt";
     String privateKey = getKeyFromFile(privateKeyFilePath);
     String publicKey = getKeyFromFile(publicKeyFilePath);
 
@@ -382,7 +383,7 @@ public class RsaKey
       SupportUtil.writeFileString(privateKeyFilePath, privateKey);
     }
 
-    String tmpFilePath = Config.KEY_SAVE_PATH + "应用私钥_tmp.txt";
+    String tmpFilePath = Config.KEY_SAVE_PATH + "privateKey_tmp.txt";
     File tmpFile = new File(tmpFilePath);
     if (tmpFile.exists())
       tmpFile.delete();
